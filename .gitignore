@@ -138,6 +138,8 @@ celerybeat.pid
 .env
 .envrc
 .venv
+ai_venv
+auth_venv
 env/
 venv/
 ENV/
