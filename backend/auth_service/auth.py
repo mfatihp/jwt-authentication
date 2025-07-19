@@ -45,6 +45,7 @@ def validate_user(username, password):
 def create_access_token(data: dict, expires_delta: timedelta | None = None): # data : {"sub": user.username} 
     to_encode = data.copy()
     expire = datetime.now(ZoneInfo("Europe/Istanbul")) + expires_delta
+    print(datetime.now(ZoneInfo("Europe/Istanbul")))
     print(expire)
     to_encode.update({"exp": expire})
 
