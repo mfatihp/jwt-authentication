@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from typing import Annotated
 from fastapi import FastAPI, Depends
@@ -9,12 +9,12 @@ import jwt
 import os
 import uvicorn
 
-
 # Custom modules
 from utils.tokens import Token
 from utils.tmp_db import users_db # Temp test db, will be replaced with postgresql
 
 load_dotenv()
+
 
 
 app = FastAPI()
@@ -25,6 +25,12 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 SECRET_KEY = os.environ.get("SECRET_KEY")
 ALGORITHM = os.environ.get("ALGORITHM")
+
+
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
+
 
 
 def validate_user(username, password):
