@@ -61,7 +61,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None): # d
 
 
 
-@app.post("/token")
+@app.post("/login")
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
     auth = validate_user(form_data.username, form_data.password)
 
@@ -72,7 +72,14 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
         return Token(access_token=access_token, token_type="bearer")
     
     return "Success"
-    
+
+@app.post("/signup")
+async def signup(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+    # TODO: Create and save hashed password into auth db
+
+    # TODO: Save the user info into ai service db
+
+    pass
 
 
 
