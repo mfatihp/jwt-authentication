@@ -8,6 +8,17 @@ services:
     volumes:
       - pg_data_db1:/var/lib/postgresql/data
       - ./backend/auth_db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+  
+  app_db:
+    image: postgres:17.5-bookworm
+    env_file:
+      - backend/app_db/.env
+    ports:
+      - "5442:5442"
+    volumes:
+      - pg_data_db2:/var/lib/postgresql/data
+      - ./backend/app_db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
 volumes:
   pg_data_db1:
+  pg_data_db2:

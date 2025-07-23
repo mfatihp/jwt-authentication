@@ -10,71 +10,32 @@ import os
 import uvicorn
 
 # Custom modules
-from utils.tokens import Token
+from utils.schemas import Token, UserSignup
 from utils.tmp_db import users_db # Temp test db, will be replaced with postgresql
-
+from utils.password_manager import PwdManager
 load_dotenv()
 
 
 
 app = FastAPI()
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
-
-SECRET_KEY = os.environ.get("SECRET_KEY")
-ALGORITHM = os.environ.get("ALGORITHM")
-
-
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-
-
-def validate_user(username, password):
-    # Query user hashed password
-    if username in users_db:
-        user_dict = users_db[username]
-        hashed_pwd = user_dict["hashed_password"]
-
-        # Verify password
-        matched = pwd_context.verify(password, hashed_pwd)
-    else: 
-        matched = False
-    return matched
-
-
-
-
-def create_access_token(data: dict, expires_delta: timedelta | None = None): # data : {"sub": user.username} 
-    to_encode = data.copy()
-    expire = datetime.now(ZoneInfo("Europe/Istanbul")) + expires_delta
-    print(datetime.now(ZoneInfo("Europe/Istanbul")))
-    print(expire)
-    to_encode.update({"exp": expire})
-
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
-
+pwd_manager = PwdManager()
 
 
 
 @app.post("/login")
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
-    auth = validate_user(form_data.username, form_data.password)
+    auth = pwd_manager.validate_user(form_data.username, form_data.password)
 
     if auth:
         access_token_expires = timedelta(minutes=15)
-        access_token = create_access_token(data = {"sub": form_data.username}, expires_delta=access_token_expires)
+        access_token = pwd_manager.create_access_token(data = {"sub": form_data.username}, expires_delta=access_token_expires)
 
         return Token(access_token=access_token, token_type="bearer")
     
     return "Success"
 
 @app.post("/signup")
-async def signup(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+async def signup(user_info: UserSignup):
     # TODO: Create and save hashed password into auth db
 
     # TODO: Save the user info into ai service db
