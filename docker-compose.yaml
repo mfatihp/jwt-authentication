@@ -14,7 +14,7 @@ services:
     env_file:
       - backend/app_db/.env
     ports:
-      - "5442:5442"
+      - "5433:5432"
     volumes:
       - pg_data_db2:/var/lib/postgresql/data
       - ./backend/app_db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro

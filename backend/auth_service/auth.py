@@ -36,11 +36,9 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 
 @app.post("/signup")
 async def signup(user_info: UserSignup):
-    # TODO: Create and save hashed password into auth db
+    pwd_manager.sign_up(user=user_info)
 
-    # TODO: Save the user info into ai service db
-
-    pass
+    return {"msg": "Success!!!"}
 
 
 
