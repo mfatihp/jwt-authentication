@@ -4,6 +4,8 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String
 
 
+
+# Database Schemas
 Base = declarative_base()
 
 class UserAuth(Base):
@@ -23,12 +25,13 @@ class UserApp(Base):
     email = Column(String, nullable=False)
 
 
+# FastAPI Schemas
 class Token(BaseModel):
     access_token: str
     token_type: str
 
 
-class UserSignup(BaseModel):
+class User(BaseModel):
     username: str
     email: EmailStr
     password: str
