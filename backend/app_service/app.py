@@ -1,41 +1,27 @@
 from fastapi import FastAPI
-import sec.auth
+from fastapi import HTTPException, status
 
+import jwt
 
 
 app = FastAPI()
-app.include_router(sec.auth)
 
+SECRET_KEY = ""
+ALGORITHM = ""
 
-@app.get("/")
-def hello():
-    return {"msg": "Hello World"}
-
-
-
-@app.post("/token")
-async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]) -> Token:
-    user = authenticate_user(fake_users_db, form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.username}, expires_delta=access_token_expires
-    )
-    return Token(access_token=access_token, token_type="bearer")
+def check_token_validity(token:str):
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
 
 
-@app.get("/users/me/", response_model=User)
-async def read_users_me(current_user: Annotated[User, Depends(get_current_active_user)]):
-    return current_user
+@app.get("/awesome_app")
+async def ai_function():
+    valid = check_token_validity()
 
-
-
-@app.get("/users/me/items/")
-async def read_own_items(current_user: Annotated[User, Depends(get_current_active_user)]):
-    return [{"item_id": "Foo", "owner": current_user.username}]
+    if valid:
+        # TODO: Add a real function here
+        pass
+    else:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Incorrect username or password",
+                            headers={"WWW-Authenticate": "Bearer"})
