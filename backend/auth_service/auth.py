@@ -23,9 +23,10 @@ async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
 
 @app.post("/signup")
 async def signup(user_info: User):
-    pwd_manager.sign_up(user=user_info)
-
-    return {"msg": "Success!!!"}
+    token = pwd_manager.sign_up(user=user_info)
+    
+    if token is not None:
+        return token
 
 
 

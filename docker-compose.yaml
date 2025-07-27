@@ -1,10 +1,24 @@
 services:
+  auth_service:
+    build:
+      context: ./backend/auth_service
+      dockerfile: Dockerfile
+    ports:
+      - 8000:8000
+    restart: unless-stopped
+    env_file:
+      - backend/auth_service/.env
+    depends_on:
+      - auth_db
+      - app_db
+
   auth_db:
     image: postgres:17.5-bookworm
     env_file:
       - backend/auth_db/.env
     ports:
       - "5432:5432"
+    restart: unless-stopped
     volumes:
       - pg_data_db1:/var/lib/postgresql/data
       - ./backend/auth_db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
@@ -15,6 +29,7 @@ services:
       - backend/app_db/.env
     ports:
       - "5433:5432"
+    restart: unless-stopped
     volumes:
       - pg_data_db2:/var/lib/postgresql/data
       - ./backend/app_db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro

@@ -37,10 +37,9 @@ class PwdManager:
         with self.db_session_scope(self.auth_engine) as session_auth, self.db_session_scope(self.app_engine) as session_app:
             db_check_username = session_auth.execute(select(UserAuth).where(UserAuth.username == user.username))
             db_check_email = session_auth.execute(select(UserAuth).where(UserAuth.email == user.email))
-            
+
             # Check db for duplicate username or email
-            if (len(db_check_email.all()) == 0) & (len(db_check_username.all()) == 0):
-                
+            if (len(db_check_email.all()) <= 0) and (len(db_check_username.all()) <= 0):
                 # Insert into auth db
                 session_auth.execute(
                     insert(UserAuth),
@@ -54,15 +53,15 @@ class PwdManager:
                     [
                         {"username": user.username, "email": user.email}
                     ])
-            
-            elif len(db_check_email.all()) > 0:
-                raise "Email already in use"
-            
-            elif len(db_check_username.all()) > 0:
-                raise "Username already in use"
+                
+                # Return initial token
+                expire = timedelta(minutes=15)
+                token = self.create_access_token(data={"sub": user.username}, expires_delta=expire)
+
+                return Token(access_token=token, token_type="bearer") 
             
             else:
-                raise "Unexpected error raised"
+                print("Email or username already in use")
 
 
     def login(self, user: User):
