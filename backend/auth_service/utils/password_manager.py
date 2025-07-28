@@ -85,11 +85,13 @@ class PwdManager:
     def validate_user(self, user_fv: User):
         # Query hashed password for user
         with self.db_session_scope(self.auth_engine) as session_auth:
-            db_user_info = session_auth.execute(select(UserAuth).where(UserAuth.username == user_fv.username))
-        
-        hashed_pwd = self.get_password_hash(user_fv.password)
+            db_user_info = session_auth.execute(select(UserAuth).where(UserAuth.username == user_fv.username)).scalars().first()
 
-        return db_user_info[0]["hpass"] == hashed_pwd
+            hpass = db_user_info.hpass
+        
+        # hashed_pwd = self.get_password_hash(user_fv.password)
+
+        return self.pwd_context.verify(user_fv.password, hpass)
     
     
     def create_access_token(self, data: dict, expires_delta: timedelta | None = None):

@@ -11,6 +11,19 @@ services:
     depends_on:
       - auth_db
       - app_db
+    
+  app_service:
+    build:
+      context: ./backend/app_service
+      dockerfile: Dockerfile
+    ports:
+      - 8001:8001
+    restart: unless-stopped
+    env_file:
+      - backend/app_service/.env
+    depends_on:
+      - auth_db
+      - app_db
 
   auth_db:
     image: postgres:17.5-bookworm
