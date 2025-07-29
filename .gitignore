@@ -211,3 +211,6 @@ __marimo__/
 # Folders
 test/
 .backend/
+
+# Files
+*.drawio

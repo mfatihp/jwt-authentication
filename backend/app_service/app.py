@@ -1,9 +1,10 @@
 from fastapi import FastAPI
 from fastapi import HTTPException, status
 from dotenv import load_dotenv
-from pydantic import BaseModel
 from datetime import datetime
 from zoneinfo import ZoneInfo
+from utils.schemas import Payload, NewUser
+from utils.signup_manager import SignupManager
 
 import os
 import jwt
@@ -11,12 +12,8 @@ import jwt
 load_dotenv()
 
 app = FastAPI()
+sign_up_mng = SignupManager()
 
-class Payload(BaseModel):
-    access_token: str
-    msg: str
-
-datetime.now(ZoneInfo("Europe/Istanbul"))
 
 
 def check_token_validity(token:str):
@@ -42,3 +39,8 @@ async def ai_function(data: Payload):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="Incorrect username or password",
                             headers={"WWW-Authenticate": "Bearer"})
+    
+
+@app.post("/sync_user")
+async def sync(user: NewUser):
+    sign_up_mng.sign_up(user_info=user)
