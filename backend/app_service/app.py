@@ -42,6 +42,6 @@ async def ai_function(data: Payload):
     
 
 
-@app.post("/sync_user")
+@app.put("/sync_user")
 async def sync(user: NewUser):
     sign_up_mng.sign_up(user_info=user)

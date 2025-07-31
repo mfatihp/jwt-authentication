@@ -48,7 +48,7 @@ class PwdManager:
                     ])
                 
                 # Sync user with app db
-                requests.post(self.APP_SERVICE_HOST, json={"username": user.username, "email": user.email})
+                requests.put(self.APP_SERVICE_HOST, json={"username": user.username, "email": user.email})
 
                 # Return initial token
                 expire = timedelta(minutes=15)
