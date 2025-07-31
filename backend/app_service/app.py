@@ -23,23 +23,24 @@ def check_token_validity(token:str):
     
     # Check expiration date 
     if exp_datetime > datetime.now(ZoneInfo("Europe/Istanbul")):
-        return True
+        return True, payload.get("sub")
     else: 
-        return False
+        return False, None
 
 
 
 @app.get("/awesome_app")
 async def ai_function(data: Payload):
-    valid = check_token_validity(token=data.access_token)
+    valid, username = check_token_validity(token=data.access_token)
 
     if valid:
-        return {"msg": "You accessed!!!"}
+        return {"accessed_user": sign_up_mng.test_db(user_info=username), "msg": "You accessed!!!"}
     else:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
                             detail="Incorrect username or password",
                             headers={"WWW-Authenticate": "Bearer"})
     
+
 
 @app.post("/sync_user")
 async def sync(user: NewUser):

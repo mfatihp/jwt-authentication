@@ -24,6 +24,14 @@ class SignupManager:
                     ])
 
 
+    def test_db(self, user_info: str):
+        with self.db_session_scope(self.db_engine) as session_app:
+            stmt = select(UserApp).where(UserApp.username == user_info)
+
+            result = session_app.scalars(stmt).one()
+        
+            return result.username
+
 
     @contextmanager
     def db_session_scope(self, engine):
