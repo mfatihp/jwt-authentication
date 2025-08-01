@@ -57,8 +57,8 @@ A distributed authentication and authorization system built using FastAPI and JW
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/mfatihp/["reponame"]
-cd ["repo name"]
+git clone https://github.com/mfatihp/jwt-authentication-microservice.git
+cd jwt-authentication-microservice
 ```
 
 ### 2. Run with Docker Compose
@@ -76,10 +76,8 @@ docker compose up --build
 - Python 3.12
 - FastAPI
 - PostgreSQL
-- SQLAlchemy
-- Docker & Docker Compose
-- JWT (PyJWT)
-- Passlib
+- Docker
+- JWT 
 
 
 <br/>
