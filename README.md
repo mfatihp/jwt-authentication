@@ -11,11 +11,41 @@ A distributed authentication and authorization system built using FastAPI and JW
 - **auth_db**: Used by auth service to store user data, email and hashed password.
 - **app_db**: Used by both services to store user data and email.
 
+<br/>
+
+<p align="center">
+<img src="docs/jwt_system.drawio.svg" alt="JWT Auth Flow" width="800"/>
+</p>
 
 <br/>
 
 ## ✨ Features
 
+### 🧩 Modular Microservice Architecture
+
+- auth_service: Handles user registration, login, and JWT generation
+
+- app_service: Consumes tokens, validates user sessions, and performs app-specific logic
+
+### 🔐 Secure JWT Authentication
+
+- Token creation with expiration and refresh support
+
+- Protected endpoints with token verification
+
+### 🔄 User Sync Mechanism
+
+- Automatically syncs authenticated user data between auth_service and app_service
+
+### 🛢️ Separate Databases
+
+- auth_db for authentication credentials
+
+- app_db for application-specific user data
+
+### 🐳 Dockerized Setup
+
+- Fully containerized with Docker Compose for easy deployment
 
 
 
