@@ -61,7 +61,68 @@ git clone https://github.com/mfatihp/jwt-authentication-microservice.git
 cd jwt-authentication-microservice
 ```
 
-### 2. Run with Docker Compose
+### 2. Create environment files
+
+Create your `SECRET_KEY` for password encoding.
+
+```bash
+openssl rand -hex 32
+```
+<br/>
+
+The list of `.env` files' locations.
+- app_service
+
+```bash
+cd backend/app_service
+touch .env
+```
+
+```env
+SECRET_KEY="your secret key"
+ALGORITHM="HS256"
+
+APP_HOST ="app_db"
+APP_PORT ="5432"
+APP_USER="DB username"
+APP_PWD="DB password"
+APP_DB="app_db"
+```
+
+- app_db
+
+```bash
+cd backend/app_db
+touch .env
+```
+
+```env
+POSTGRES_USER="DB username"
+POSTGRES_PASSWORD="DB password"
+POSTGRES_DB="app_db"
+```
+
+- auth_service
+
+```bash
+cd backend/auth_service
+touch .env
+```
+
+```env
+SECRET_KEY="your secret key"
+ALGORITHM="HS256"
+
+APP_SERVICE_HOST="http://app_service:8001/sync_user"
+
+AUTH_HOST ="auth_db"
+AUTH_PORT ="5432"
+AUTH_USER="DB username"
+AUTH_PWD="DB password"
+AUTH_DB="auth_db"
+```
+
+### Run with Docker Compose
 
 ```bash
 docker compose up --build
