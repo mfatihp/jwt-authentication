@@ -1,4 +1,4 @@
-# JWT Authentication Microservice
+# JWT Authentication
 
 A distributed authentication and authorization system built using FastAPI and JWT tokens. This project includes an `auth_service` for user management and token handling, and an `app_service` that uses JWT validation to authorize access to protected resources. Designed with modularity, security, and Docker-based deployment in mind.
 
@@ -71,55 +71,90 @@ openssl rand -hex 32
 <br/>
 
 The list of `.env` files' locations.
-- app_service
+
+#### 1. `app_service`
+
+Create a `.env` file inside `backend/app_service`:
 
 ```bash
 cd backend/app_service
 touch .env
 ```
 
+Add the following content to `.env` with your settings:
+
 ```env
+# JWT settings
 SECRET_KEY="your secret key"
 ALGORITHM="HS256"
 
-APP_HOST ="app_db"
-APP_PORT ="5432"
+# Database configuration
+APP_HOST ="app_db" # Do not change
+APP_PORT ="5432" # Do not change
 APP_USER="DB username"
 APP_PWD="DB password"
-APP_DB="app_db"
+APP_DB="app_db" # Do not change
 ```
 
-- app_db
+#### 2. `app_db`
+
+Create a `.env` file inside `backend/app_db`:
 
 ```bash
 cd backend/app_db
 touch .env
 ```
 
+Add the following content to `.env` with your settings:
+
 ```env
 POSTGRES_USER="DB username"
 POSTGRES_PASSWORD="DB password"
-POSTGRES_DB="app_db"
+POSTGRES_DB="app_db" # Do not change
 ```
 
-- auth_service
+#### 3. `auth_service`
+
+Create a `.env` file inside `backend/auth_service`:
 
 ```bash
 cd backend/auth_service
 touch .env
 ```
 
+Add the following content to `.env` with your settings:
+
 ```env
+# JWT settings
 SECRET_KEY="your secret key"
 ALGORITHM="HS256"
 
-APP_SERVICE_HOST="http://app_service:8001/sync_user"
+# User sync endpoint
+APP_SERVICE_HOST="http://app_service:8001/sync_user" # Do not change
 
-AUTH_HOST ="auth_db"
-AUTH_PORT ="5432"
+# Database configuration
+AUTH_HOST ="auth_db" # Do not change
+AUTH_PORT ="5432" # Do not change
 AUTH_USER="DB username"
 AUTH_PWD="DB password"
-AUTH_DB="auth_db"
+AUTH_DB="auth_db" # Do not change
+```
+
+#### 4. `auth_db`
+
+Create a `.env` file inside `backend/auth_db`:
+
+```bash
+cd backend/auth_db
+touch .env
+```
+
+Add the following content to `.env` with your settings:
+
+```env
+POSTGRES_USER="DB username"
+POSTGRES_PASSWORD="DB password"
+POSTGRES_DB="auth_db" # Do not change
 ```
 
 ### Run with Docker Compose
