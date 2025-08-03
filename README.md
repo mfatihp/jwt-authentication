@@ -29,7 +29,7 @@ A distributed authentication and authorization system built using FastAPI and JW
 
 ### 🔐 Secure JWT Authentication
 
-- Token creation with expiration and refresh support
+- Token creation with expiration support
 
 - Protected endpoints with token verification
 
@@ -157,7 +157,7 @@ POSTGRES_PASSWORD="DB password"
 POSTGRES_DB="auth_db"
 ```
 
-### Run with Docker Compose
+### 3. Run with Docker Compose
 
 ```bash
 docker compose up --build
