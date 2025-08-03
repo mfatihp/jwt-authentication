@@ -57,8 +57,8 @@ A distributed authentication and authorization system built using FastAPI and JW
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/mfatihp/jwt-authentication-microservice.git
-cd jwt-authentication-microservice
+git clone https://github.com/mfatihp/jwt-authentication.git
+cd jwt-authentication
 ```
 
 ### 2. Create environment files
@@ -89,11 +89,11 @@ SECRET_KEY="your secret key"
 ALGORITHM="HS256"
 
 # Database configuration
-APP_HOST ="app_db" # Do not change
-APP_PORT ="5432" # Do not change
+APP_HOST ="app_db"
+APP_PORT ="5432"
 APP_USER="DB username"
 APP_PWD="DB password"
-APP_DB="app_db" # Do not change
+APP_DB="app_db"
 ```
 
 #### 2. `app_db`
@@ -110,7 +110,7 @@ Add the following content to `.env` with your settings:
 ```env
 POSTGRES_USER="DB username"
 POSTGRES_PASSWORD="DB password"
-POSTGRES_DB="app_db" # Do not change
+POSTGRES_DB="app_db"
 ```
 
 #### 3. `auth_service`
@@ -130,14 +130,14 @@ SECRET_KEY="your secret key"
 ALGORITHM="HS256"
 
 # User sync endpoint
-APP_SERVICE_HOST="http://app_service:8001/sync_user" # Do not change
+APP_SERVICE_HOST="http://app_service:8001/sync_user"
 
 # Database configuration
-AUTH_HOST ="auth_db" # Do not change
-AUTH_PORT ="5432" # Do not change
+AUTH_HOST ="auth_db"
+AUTH_PORT ="5432"
 AUTH_USER="DB username"
 AUTH_PWD="DB password"
-AUTH_DB="auth_db" # Do not change
+AUTH_DB="auth_db"
 ```
 
 #### 4. `auth_db`
@@ -154,7 +154,7 @@ Add the following content to `.env` with your settings:
 ```env
 POSTGRES_USER="DB username"
 POSTGRES_PASSWORD="DB password"
-POSTGRES_DB="auth_db" # Do not change
+POSTGRES_DB="auth_db"
 ```
 
 ### Run with Docker Compose
