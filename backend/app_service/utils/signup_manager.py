@@ -8,6 +8,9 @@ from .schemas import UserApp, NewUser
 
 
 class SignupManager:
+    """
+    A class to manage user sign-up operations, including test database interactions.
+    """
     def __init__(self):
         env_info = dotenv_values(".env")
         app_db_url = f"postgresql+psycopg2://{env_info["APP_USER"]}:{env_info["APP_PWD"]}@{env_info["APP_HOST"]}:{env_info["APP_PORT"]}/{env_info["APP_DB"]}"
@@ -16,6 +19,9 @@ class SignupManager:
     
     
     def sign_up(self, user_info: NewUser):
+        """
+        Inserts a new user into the UserApp table.
+        """
         with self.db_session_scope(self.db_engine) as session_app:
             session_app.execute(
                 insert(UserApp),
@@ -25,6 +31,9 @@ class SignupManager:
 
 
     def test_db(self, user_info: str):
+        """
+        Retrieves a user's username from the UserApp table based on the provided user_info for test purposes.
+        """
         with self.db_session_scope(self.db_engine) as session_app:
             stmt = select(UserApp).where(UserApp.username == user_info)
 

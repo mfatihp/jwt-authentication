@@ -18,6 +18,9 @@ import requests
 
 
 class PwdManager:
+    """
+    A class to manage password operations, including user sign-up and login.
+    """
     def __init__(self):
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
         self.oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -34,6 +37,9 @@ class PwdManager:
     
 
     def sign_up(self, user: User):
+        """
+        Inserts a new user into the UserAuth table and syncs with the app service.
+        """
         with self.db_session_scope(self.auth_engine) as session_auth:
             db_check_username = session_auth.execute(select(UserAuth).where(UserAuth.username == user.username))
             db_check_email = session_auth.execute(select(UserAuth).where(UserAuth.email == user.email))
@@ -61,6 +67,9 @@ class PwdManager:
 
 
     def login(self, user: User):
+        """ 
+        Validates user credentials and returns an access token if successful.
+        """
         user_flag = self.validate_user(user_fv=user)
 
         if user_flag:
@@ -75,22 +84,29 @@ class PwdManager:
 
 
     def get_password_hash(self, password):
+        """
+        Hashes the provided password using bcrypt.
+        """
         return self.pwd_context.hash(password)
     
     
     def validate_user(self, user_fv: User):
+        """ 
+        Validates the user's credentials against the database.
+        """
         # Query hashed password for user
         with self.db_session_scope(self.auth_engine) as session_auth:
             db_user_info = session_auth.execute(select(UserAuth).where(UserAuth.username == user_fv.username)).scalars().first()
 
             hpass = db_user_info.hpass
-        
-        # hashed_pwd = self.get_password_hash(user_fv.password)
 
         return self.pwd_context.verify(user_fv.password, hpass)
     
     
     def create_access_token(self, data: dict, expires_delta: timedelta | None = None):
+        """
+        Creates a JWT access token with an expiration time.
+        """
         to_encode = data.copy()
         expire = datetime.now(ZoneInfo("Europe/Istanbul")) + expires_delta
         to_encode.update({"exp": expire})

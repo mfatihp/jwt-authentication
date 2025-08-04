@@ -25,7 +25,7 @@ class UserApp(Base):
     email = Column(String, nullable=False)
 
 
-# FastAPI Schemas
+# API Schemas
 class Token(BaseModel):
     access_token: str
     token_type: str

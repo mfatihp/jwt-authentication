@@ -18,11 +18,18 @@ pwd_manager = PwdManager()
 
 @app.post("/login")
 async def login(form_data: Annotated[OAuth2PasswordRequestForm, Depends()]):
+    """
+    Handles user login and returns an access token.
+    """
     return pwd_manager.login(user=form_data)
 
 
 @app.post("/signup")
 async def signup(user_info: User):
+    """
+    Handles user sign-up and returns an access token.
+    """
+    # Sign up the user and get the token
     token = pwd_manager.sign_up(user=user_info)
     
     if token is not None:
